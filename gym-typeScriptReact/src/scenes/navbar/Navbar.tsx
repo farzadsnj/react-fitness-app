@@ -7,11 +7,12 @@ import useMediaQuery from "@/hooks/UseMediaQuary";
 import ActionButton from "@/shared/ActionButton";
 
 type Props = {
+  isTopOfPage: boolean,
   selectedPage: SelectedPage;
   setSelectedPage: (value: SelectedPage) => void;
 };
 
-const Navbar = ({ selectedPage, setSelectedPage }: Props) => {
+const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }: Props) => {
   const flexBetween = "flex items-center justify-between";
   const isAboveMediumScreens = useMediaQuery("(min-width: 1060px)");
   const [isMenuToggled, setIsMenuToggled] = useState<boolean>(false);
@@ -50,7 +51,9 @@ const Navbar = ({ selectedPage, setSelectedPage }: Props) => {
                 </div>
                 <div className={`${flexBetween} gap-8`}>
                   <a href="#">Sign In</a>
-                  <ActionButton setSelectedPage={setSelectedPage}>Become a Member</ActionButton >
+                  <ActionButton setSelectedPage={setSelectedPage}>
+                    Become a Member
+                  </ActionButton>
                 </div>
               </div>
             ) : (
@@ -64,6 +67,50 @@ const Navbar = ({ selectedPage, setSelectedPage }: Props) => {
           </div>
         </div>
       </div>
+      {/* mobile menu */}
+      {!isAboveMediumScreens && isMenuToggled && (
+        <div className="fixed right-0 bottom-0 z-40 h-full w-[300px] bg-primary-100 drop-shadow-xl">
+          {/* close icon */}
+          <div className=" flex justify-end p-12">
+            <button onClick={() => setIsMenuToggled(!isMenuToggled)}>
+              <XMarkIcon className="h-6 w-6 text-gray-400" />
+            </button>
+          </div>
+          {/* mobile menu items */}
+          <div className="flex flex-col">
+            <div className="ml-[33%] flex flex-col gap-10 text-xl">
+              <NavbarLink
+                selectedPage={selectedPage}
+                setSelectedPage={setSelectedPage}
+                page="Home"
+              />
+              <NavbarLink
+                selectedPage={selectedPage}
+                setSelectedPage={setSelectedPage}
+                page="Benefits"
+              />
+              <NavbarLink
+                selectedPage={selectedPage}
+                setSelectedPage={setSelectedPage}
+                page="Our Classes"
+              />
+              <NavbarLink
+                selectedPage={selectedPage}
+                setSelectedPage={setSelectedPage}
+                page="Contact Us"
+              />
+            </div>
+            <div className={`${flexBetween} mt-10 flex flex-col gap-2`}>
+              <a href="#" className="text-xl">
+                Sign In
+              </a>
+              <ActionButton setSelectedPage={setSelectedPage}>
+                Become a Member
+              </ActionButton>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
